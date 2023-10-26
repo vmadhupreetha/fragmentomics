@@ -1,3 +1,4 @@
+#some comment
 filePaths = {
     "inputBedFileFolder": "/hpc/compgen/projects/gw_cfdna/raw/external_data_haizi/unimputed",
     "snpFile": "/hpc/compgen/projects/fragclass/analysis/mvivekanandan/madhu_data/snps.txt",
