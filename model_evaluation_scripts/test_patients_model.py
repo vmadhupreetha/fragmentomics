@@ -35,8 +35,8 @@ arguments = {}
 #File paths
 arguments["testCoordsDir"] = config.filePaths.get("testCoordsDir")
 arguments["patientTransplantStatusFile"] = config.filePaths.get("patientTransplantStatusFile")
-arguments["modelStateDirectory"] = config.filePaths.get("modelStateDirectory")
-arguments["testModelPlotsDir"] = config.filePaths.get("testModelPlotsDir")
+arguments["finalValidationModelStateDir"] = config.filePaths.get("finalValidationModelStateDir")
+arguments["finalValidationModelPlotsDir"] = config.filePaths.get("finalValidationModelPlotsDir")
 arguments["refGenomePath"] = config.filePaths.get("refGenomePath")
 
 #Model hyperparameters 
@@ -415,10 +415,10 @@ def combinePredictionsFromAllPatients(plotsDirectoryPath):
     to_exclude_patients = ['L80-W2.donor.hdf5', 'L80-W2.recipient.hdf5', 'L68-M12.donor.hdf5', 'L68-M12.recipient.hdf5', 'L81-M2.donor.hdf5', 'L81-M2.recipient.hdf5', 'L9b-W2.donor.hdf5', 'L9b-W2.recipient.hdf5', 'L82-M1-5.donor.hdf5', 'L82-M1-5.recipient.hdf5', 'L81-D1.1.donor.hdf5', 'L81-D1.1.recipient.hdf5', 'L77-D1-3.donor.hdf5', 'L77-D1-3.recipient.hdf5', 'L33-M3.donor.hdf5', 'L33-M3.recipient.hdf5', 'L5-M13_5.donor.hdf5', 'L5-M13_5.recipient.hdf5', 'L33-M8.donor.hdf5', 'L33-M8.recipient.hdf5', 'L34-M6.donor.hdf5', 'L34-M6.recipient.hdf5', 'L16-M23.donor.hdf5', 'L16-M23.recipient.hdf5', 'L59-M6.donor.hdf5', 'L59-M6.recipient.hdf5', 'L35-W2.donor.hdf5', 'L35-W2.recipient.hdf5', 'L33-M2-5.donor.hdf5', 'L33-M2-5.recipient.hdf5', 'L2-M25.donor.hdf5', 'L2-M25.recipient.hdf5', 'L69-M6.donor.hdf5', 'L69-M6.recipient.hdf5', 'L81-M3.donor.hdf5', 'L81-M3.recipient.hdf5', 'L69-M2.donor.hdf5', 'L69-M2.recipient.hdf5', 'L30-M2.donor.hdf5', 'L30-M2.recipient.hdf5', 'L74-D2-1.donor.hdf5', 'L74-D2-1.recipient.hdf5']
     #Load state dict into the model 
     cnnModel = sequenceCnnModel.SequenceCnnModel(0).to('cuda')
-    arg1 =arguments["modelStateDirectory"]
+    arg1 =arguments["finalValidationModelStateDir"]
     arg2 = arguments["checkpointsFile"]
     print(f"About to get checkpoints path, the arguments are {arg1} and {arg2}")
-    checkpoint_path = os.path.join(arguments["modelStateDirectory"], arguments["checkpointsFile"])
+    checkpoint_path = os.path.join(arguments["finalValidationModelStateDir"], arguments["checkpointsFile"])
     checkpoint_dict = torch.load(checkpoint_path)
     cnnModel.load_state_dict(checkpoint_dict["model_state_dict"])
     cnnModel.eval()
@@ -491,6 +491,7 @@ def combinePredictionsFromAllPatients(plotsDirectoryPath):
     print(f"After getting predictions, the plotsData values are {patient_predicted_donors}, {patient_donor_percent}, {predicted_transplant_status}, {true_transplant_status}")
     
     storeDataAndMakePlots(plotsDirectoryPath, allPlotsData, all_output_probabilities, all_class_predictions, modelInputType="Sequence")
+
 if __name__ == '__main__':
     print(f"Start time is {time.time()}")
     
@@ -499,7 +500,7 @@ if __name__ == '__main__':
     # modelname = arguments["modelName"]
     modelname = "all_test_patients_part_2"
     plotsDirectoryName = filename_extension + "_" + str(modelname)
-    plotsDirectoryPath = os.path.join(arguments["testModelPlotsDir"], plotsDirectoryName)
+    plotsDirectoryPath = os.path.join(arguments["finalValidationModelPlotsDir"], plotsDirectoryName)
     os.mkdir(plotsDirectoryPath)
 
     combinePredictionsFromAllPatients(plotsDirectoryPath)   

@@ -1,7 +1,6 @@
 filePaths = {
     #All coordinates related file paths
     "coordStoreDirectory": "/hpc/compgen/projects/fragclass/analysis/mvivekanandan/output/OnlyTwoCoordinateFilesForTestingSmall",
-    "testCoordsDir": "/hpc/compgen/projects/fragclass/analysis/mvivekanandan/output/latestTestCoordinateFiles",
     "inputBedFileFolder": "/hpc/compgen/projects/gw_cfdna/raw/external_data_haizi/unimputed",
     "snpFile": "/hpc/compgen/projects/fragclass/analysis/mvivekanandan/madhu_data/snps.txt",
     "refGenomePath" : "/hpc/compgen/projects/fragclass/raw/hg19_genome/hg19_ch1-22_XYM.fa",
@@ -21,11 +20,10 @@ filePaths = {
     
     #All model output file paths
     "trainingAndValidationOutputsDirectory": "/hpc/compgen/projects/fragclass/analysis/mvivekanandan/output/trainingValidationPlotsAndMetrics/final_report_combined_model",
-    "interruptedModelDataPath":"/hpc/compgen/projects/fragclass/analysis/mvivekanandan/output/trainingValidationPlotsAndMetrics/final_report_cnn_models/the-plotsDir-created-during-model-execution",
 
     #Validating model paths
-    "modelStateDirectory": "/hpc/compgen/projects/fragclass/analysis/mvivekanandan/output/trainingValidationPlotsAndMetrics/final_report_cnn_models/27_10_11_20_31_lr_0.00001_filters_40_80",
-    "testModelPlotsDir": "/hpc/compgen/projects/fragclass/analysis/mvivekanandan/output/trainingValidationPlotsAndMetrics/final_report_patient_level_plots",
+    "finalValidationModelStateDir": "/hpc/compgen/projects/fragclass/analysis/mvivekanandan/output/trainingValidationPlotsAndMetrics/final_report_cnn_models/27_10_11_20_31_lr_0.00001_filters_40_80",
+    "finalValidationModelPlotsDir": "/hpc/compgen/projects/fragclass/analysis/mvivekanandan/output/trainingValidationPlotsAndMetrics/final_report_patient_level_plots",
 
     #Filenames where different intermediate model outputs are stored for plotting. 
     "trainingDataFile" : "trainingData.pkl",
@@ -78,9 +76,6 @@ datasetNames = {
     "trainingEncodedSequence": "trainingEncodedSequence",
     "validationEncodedSequence": "validationEncodedSequence",
     "testEncodedSequence": "testEncodedSequence",
-    "trainingSequenceLength": "trainingSequenceLength",
-    "validationSequenceLength": "validationSequenceLength",
-    "testSequenceLength": "testSequenceLength",
 
     #Labels
     "trainingLabels": "trainingLabels",

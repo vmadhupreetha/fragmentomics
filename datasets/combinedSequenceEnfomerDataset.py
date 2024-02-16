@@ -52,9 +52,6 @@ arguments["testLabelsDatasetName"] = config.datasetNames.get("testLabels")
 arguments["trainingEncodedSequenceDatasetName"] = config.datasetNames.get("trainingEncodedSequence")
 arguments["validationEncodedSequenceDatasetName"] = config.datasetNames.get("validationEncodedSequence")
 arguments["testEncodedSequenceDatasetName"] = config.datasetNames.get("testEncodedSequence")
-arguments["trainingSequenceLengthDatasetName"] = config.datasetNames.get("trainingSequenceLength")
-arguments["validationSequenceLengthDatasetName"] = config.datasetNames.get("validationSequenceLength")
-arguments["testSequenceLengthDatasetName"] = config.datasetNames.get("testSequenceLength")
 
 #Enformer output datasets
 arguments["trainingEnformerOutputDatasetName"] = config.datasetNames.get("trainingEnformerOutput")

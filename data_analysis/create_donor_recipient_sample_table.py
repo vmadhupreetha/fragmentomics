@@ -1,3 +1,6 @@
+'''
+Create a CSV table of number of donor and recipient samples for each patient
+'''
 import pandas as pd
 import numpy as np
 import os
