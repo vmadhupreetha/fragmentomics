@@ -1,3 +1,6 @@
+'''
+This script contains code to do a TSNE and UMAP visualization of Enformer predictions (5,313 tracks).
+'''
 import numpy as np
 import pandas as pd
 

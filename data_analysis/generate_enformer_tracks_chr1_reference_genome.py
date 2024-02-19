@@ -1,3 +1,21 @@
+'''
+This is a test script to generate the Enformer tracks for entire length of chromosome 1. Enformer takes an input of
+size 196607 bps. This script contains functions to break down the entire chromosome into Enformer input lengths and
+store the results in a H5PY file.
+
+The aim of plotting Enformer output for a chromosome is to assess the extent to which Enformer tracks vary for different
+regions of the genome. Refer to plot_tracks_reference_genome.ipynb for the plots from these H5PY files.
+
+Why are we concerned about the extent to which Enformer tracks vary for different regions of the chromosome ?
+Because our whole hypothesis about donor- and recipient-fragments having variations in Enformer predictions rests on the
+assumption that donor-(lung) and recipient-derived (blood) fragments originate from different regions of the genome,
+and different regions have different Enformer tracks (because they express different genes).
+This plot allows us to test the first part of the hypothesis. DNAse peaks are highly likely to correspond to nucleosome
+regions aka the regions that form cfDNA. So DNAse track peaks can be used as a substitute for cfDNA regions.
+If the first part of the hypothesis is true, DNAse peaks for lung and blood cell types should fall in different regions.
+ So we compare the DNAse track plot for one lung cell type and one blood cell type to see if peaks really fall in
+ different regions.
+'''
 import numpy as np
 import torch
 
