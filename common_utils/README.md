@@ -9,6 +9,7 @@
 
 ### 1. Loss function 
 
+<img width="506" alt="loss_function" src="https://github.com/vmadhupreetha/fragmentomics/assets/113985193/e6cf190c-fd87-46f9-b01b-dd6c3259f68a">
 
 ### 2. Confusion Matrix 
 
