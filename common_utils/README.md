@@ -12,6 +12,7 @@
 
 ### 2. Confusion Matrix 
 
+<img width="744" alt="confusion_matrix" src="https://github.com/vmadhupreetha/fragmentomics/assets/113985193/12f5575d-67f2-425f-a809-bc4cfea7a34e">
 
 ### 3. Probability distribution 
 
