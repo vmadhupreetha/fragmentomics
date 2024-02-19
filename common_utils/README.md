@@ -11,24 +11,50 @@
 
 <img width="506" alt="loss_function" src="https://github.com/vmadhupreetha/fragmentomics/assets/113985193/e6cf190c-fd87-46f9-b01b-dd6c3259f68a">
 
+Training and validation cross entropy loss over epochs. 
+
+**Usage:** 
+1. Compare training and validation loss patterns to determine overfitting (A reduction in training loss with a simultaneous increase in validation loss implies overfittig) 
+2. Determine if the model is learning patterns (training and validation loss reduction implies learning) 
+3. Determine the number of epochs for training (training could be stopped at the epoch where loss function is stable and no longer drops)
+
 ### 2. Confusion Matrix 
 
 <img width="744" alt="confusion_matrix" src="https://github.com/vmadhupreetha/fragmentomics/assets/113985193/12f5575d-67f2-425f-a809-bc4cfea7a34e">
 
+The number of true negatives, false positives, true positives and false positives (clockwise from top left) computed from comparing the model's predictions for each cfDNA fragment with the true labels. 
+
+**Usage:**
+1. Evaluate performance of the model.
+2. Analyse biases towards the majority class.
+3. Compare training and validation set performances. 
+
 ### 3. Probability distribution 
+Distribution of probabilities (plotted over all samples for a single epoch) predicted by the model for a given sample being donor-derived. The distribution of all epochs are shown in the same plot. 
+
+**Usage:** 
+Determine if the model is learning patterns over training epoch. Towards later epochs, the probabilities should be near 0 or 1 (indicative of confidence of the model, once patterns are learnt)
 
 
 ### 4. Probability distribution separated for true positives, true negatives, false positives and false negatives 
+Distribution of probabilities (plotted over all samples) predicted by the model for a given sample being donor-derived. The distributions are separated as true positives, false positives, true negatives and false negatives. 
 
+**Usage:** 
+To analyse the confidence of the model for different prediction outcomes (is the model more confident about the correct predictions as opposed to incorrect predictions or positives as opposed to negatives). 
 
 ### 5. Receiver Operating Characteristics (ROC) curve 
+<img width="477" alt="roc_curve" src="https://github.com/vmadhupreetha/fragmentomics/assets/113985193/83cf25ac-228a-4515-a396-0802e6a35de0">
 
+Plot of the number of true positives vs false positives for varying thresholds. Here threshold refers to the minimum value of predicted probability (of given sample being donor-derived) for the sample to be assigned the class donor-derived. The area under the ROC curve (AUC) is a metric for evaluating model performance (Higher the AUC, better the model performance) 
 
 ### 6. Precision-recall curve 
 
+Plot of positive predictive value vs sensitivity of the model. Could be used to assess model performance for a class-imbalanced dataset. 
 
 ### 7. Learning rate over epoch 
+<img width="794" alt="learning_rates" src="https://github.com/vmadhupreetha/fragmentomics/assets/113985193/f33fb65a-1a2d-4b0a-bef8-601594a6ea66">
 
+Learning rate used by the optimizer in gradient descent plotted for every batch over all the training epochs. 
 
-
-### 
+**Usage**: 
+It allows us to visualize how learning rate changes when cosine annealing learning rate scheduler is used. 
