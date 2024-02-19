@@ -30,6 +30,9 @@ The number of true negatives, false positives, true positives and false positive
 3. Compare training and validation set performances. 
 
 ### 3. Probability distribution 
+
+![probability_distribution_epoch_wise](https://github.com/vmadhupreetha/fragmentomics/assets/113985193/865f1abf-df57-45bf-8a08-5d599c338d29)
+
 Distribution of probabilities (plotted over all samples for a single epoch) predicted by the model for a given sample being donor-derived. The distribution of all epochs are shown in the same plot. 
 
 **Usage:** 
@@ -37,6 +40,9 @@ Determine if the model is learning patterns over training epoch. Towards later e
 
 
 ### 4. Probability distribution separated for true positives, true negatives, false positives and false negatives 
+
+![probability_distrbution_confusion_matrix_wise](https://github.com/vmadhupreetha/fragmentomics/assets/113985193/b7242d58-f020-4882-ae9f-3f86a16ebbfd)
+
 Distribution of probabilities (plotted over all samples) predicted by the model for a given sample being donor-derived. The distributions are separated as true positives, false positives, true negatives and false negatives. 
 
 **Usage:** 
@@ -47,11 +53,7 @@ To analyse the confidence of the model for different prediction outcomes (is the
 
 Plot of the number of true positives vs false positives for varying thresholds. Here threshold refers to the minimum value of predicted probability (of given sample being donor-derived) for the sample to be assigned the class donor-derived. The area under the ROC curve (AUC) is a metric for evaluating model performance (Higher the AUC, better the model performance) 
 
-### 6. Precision-recall curve 
-
-Plot of positive predictive value vs sensitivity of the model. Could be used to assess model performance for a class-imbalanced dataset. 
-
-### 7. Learning rate over epoch 
+### 6. Learning rate over epoch 
 <img width="794" alt="learning_rates" src="https://github.com/vmadhupreetha/fragmentomics/assets/113985193/f33fb65a-1a2d-4b0a-bef8-601594a6ea66">
 
 Learning rate used by the optimizer in gradient descent plotted for every batch over all the training epochs. 
