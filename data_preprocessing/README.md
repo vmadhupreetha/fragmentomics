@@ -1,1 +1,12 @@
+This folder has script to process the cfDNA coordinates from bed files to the input format required for training and validating the Deep Learning models. 
+
+## Description and purpose of all the scripts in this folder 
+
+| S.No | Script name | Description of contents | Purpose |
+|------|-------------|-------------------------|---------|
+| 1 | [create_coord_data.ipynb](https://github.com/vmadhupreetha/fragmentomics/blob/master/data_preprocessing/create_coord_data.ipynb) | Generate H5PY files from bed files containing cfDNA coordinates. In the process, also split the data into training, validation and test set. | Starting point of the pipeline, the coordinate H5PY files are used to generate Enformer predictions and train models. |
+| 2 | [generate_one_hot_encoded_sequences.ipynb](https://github.com/vmadhupreetha/fragmentomics/blob/master/data_preprocessing/generate_one_hot_encoded_sequences.ipynb) | Test Jupyter script to generate H5PY files with one hot encoded sequences from coordinate H5PY files | Refer to [generate_one_hot_encoded_sequences.py](https://github.com/vmadhupreetha/fragmentomics/blob/master/data_preprocessing/generate_one_hot_encoded_sequences.py) |
+| 3 | [generate_one_hot_encoded_sequences.py](https://github.com/vmadhupreetha/fragmentomics/blob/master/data_preprocessing/generate_one_hot_encoded_sequences.py) | Generate H5PY files with one hot encoded sequences from coordinate H5PY files | This, along with samples from Enformer output H5PY files are the input for the third Deep Learning model. Storing the intermediary one hot encoded sequences in H5PY files is needed to read Enformer predictions and sequence together. |
+| 4 | [storeEnformerOutput.py](https://github.com/vmadhupreetha/fragmentomics/blob/master/data_preprocessing/storeEnformerOutput.py) | Generate Enformer predictions for cfDNA fragment coordinates (coordinate H5PY files) and store them in H5PY files | Enformer predictions from H5PY files is the input dataset for training and validating the Deep Learning models. |
+| 5 | [store_enformer_output_refactored.ipynb](https://github.com/vmadhupreetha/fragmentomics/blob/master/data_preprocessing/store_enformer_output_refactored.ipynb) | Test Jupyter script to generate Enformer predictions for cfDNA fragment coordinates (coordinate H5PY files) and store them in H5PY files | Refer to [storeEnformerOutput.py](https://github.com/vmadhupreetha/fragmentomics/blob/master/data_preprocessing/storeEnformerOutput.py) |
 
