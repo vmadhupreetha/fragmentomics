@@ -1,3 +1,7 @@
+This folder contains scripts to visualize and understand the input data (cfDNA fragment coordinates and Enformer predictions) better. It has scripts to do dimensionality reduction, train models (like logistic regression) and explore the separability (ability to separate donor- and recipient-derived fragments) of the feature sets used for training the Deep Learning models. 
+
+### Description and purpose of all the scripts in this folder. 
+
 | S.No | Script name | Description of contents | Purpose |
 |------|-------------|-------------------------|---------|
 | 1 | [coverage_plot_script.ipynb](https://github.com/vmadhupreetha/fragmentomics/blob/master/data_analysis/coverage_plot_script.ipynb) | Plot cfDNA fragment coverage (the number of fragments in a particular region) for chromosome 1 | To check whether donor- and recipient-derived fragments have coverage peaks in different regions of the genome (verify hypothesis behind the project) |
