@@ -1,7 +1,11 @@
+'''
+This file has functions to get predictions from a pre-trained CNN model (Deep Learning model 2) for input cfDNA
+coordinate files from any folder. There are also functions to call various plotting functions from plotUtils for the
+predictions.
+'''
 import sys
 sys.path.insert(0,'/hpc/compgen/projects/fragclass/analysis/mvivekanandan/script/madhu_scripts')
 import numpy as np
-import os
 import h5py
 import os
 from datetime import datetime
@@ -97,6 +101,18 @@ class PatientSequenceDataset(Dataset):
             length = len(f[arguments[f"{self.sampleType}LabelsDatasetName"]][:])
         return length
 
+'''
+Inputs - 
+This function defined and initializes a CNN model using the state fetched from model_state_dir. This CNN model is 
+used to get the predictions for all training and validation samples returned by the PatientSequenceDataset. 
+
+model_state_dir - Path to the directory where the pre-trained model's state is stored (It should be stored under the 
+filename "modelState". 
+
+Outputs - trainingPlotsData and validationPlotsData They are maps with keys "predictions" and "labels". Predictions has 
+predicted likelihood for a sample being donor-derived. Labels has the true labels for all the samples. There are no
+epochs involved. 
+'''
 def getPredictionsForAllData(model_state_dir):
     cnnModel = SequenceCnnModelOld.SequenceCnnModelOld(0).to('cuda')
 

@@ -1,3 +1,12 @@
+'''
+This is a file for evaluating the performance of a pre-trained CNN model on test patient data. After aggregating predictions
+and calculating percentage donors, the following graphs are created.
+1. Confusion matrix for fragment level predictions
+2. ROC plot for fragment level predictions
+3. Correlation plot for true percentage donors vs predicted percentage donors on a patient-level
+4. Plot of predicted percentage donors over days post transplant on a patient level, marked by clinical signs of rejection.
+'''
+
 import sys
 sys.path.insert(0,'/hpc/compgen/projects/fragclass/analysis/mvivekanandan/script/madhu_scripts')
 import numpy as np
@@ -64,7 +73,7 @@ arguments["checkpointsFile"] = config.filePaths.get("checkpointsFile")
 print(f"Arguments in validate_model script are {arguments}")
 print(f"\n\n \033[1mDid you check whether interchangeLabels, sequenceDataset is set to the right configurations ??\033[0m")
 
-#Pick sequences from coordinate store directory. 
+#Pytorch dataset that returns one hot encoded cfDNA sequence by processing H5PY coordinate files.
 class PatientSequenceDataset(Dataset):
     def __init__(self, filename):
         self.filename = filename
@@ -98,6 +107,9 @@ class PatientSequenceDataset(Dataset):
             length = len(f[arguments["testLabelsDatasetName"]][:])
         return length
 
+'''
+Function to generate descriptions containing metadata (like batch size, model type, number of samples etc) for plots. 
+'''
 def getParametersDescription():
     if(arguments["modelInputType"] == "Sequence"):
         numPositives = 0
@@ -120,12 +132,26 @@ def getParametersDescription():
     description = (f"Number of samples = {totalSamples} ({numPositives} positives and {numNegatives} negatives)")
     return description
 
+'''
+Input - 
+preds_array - numpy 2D array of predicted likelihoods by the model where 1st column is the likelihood of the sample being
+donor-derived and 2nd column is the likelihood of the sample being recipient-derived. 
+
+Output - 
+softmax_preds - 1D array which is the 1st column of the preds_array converted into probabilities (value between 0 and 1)
+
+Converts probabilities into likelihoods. 
+'''
 def get_softmax(preds_array):
     preds_exp = np.exp(preds_array)
     sum_array = np.sum(preds_exp, axis = 1)
     softmax_preds = preds_exp/sum_array[:, None]
     return softmax_preds
 
+'''
+Call functions to get predictions
+For more info, refer to the function of the same name in plotUtils.py
+'''
 def getClassPredictionsAndProbsFromOutput(plotsData):
     threshold = arguments["threshold"]
     predicted_labels = []
@@ -148,6 +174,8 @@ def getClassPredictionsAndProbsFromOutput(plotsData):
 
     return softmax_positives, predicted_labels
 
+'''
+'''
 def getPatientLevelPercentDonorTranplantStatusPredictions(patient_donor_count):
     col_names = ["patient_sample_id", "num_samples", "donor_percentage", "Metadata Donor Percent", "DaysPostTransplant", "Clinical_signs_of_rejection", "patient_id"]
     patient_labels_df = pd.read_csv(arguments["patientTransplantStatusFile"], sep = "\t", names= col_names, skiprows=1)
@@ -173,6 +201,9 @@ def getPatientLevelPercentDonorTranplantStatusPredictions(patient_donor_count):
     
     return patient_level_donor_percents, predicted_transplant_statuses, true_transplant_statuses
 
+'''
+Given a cf_mmatrix, generates the annotations depicting the categories, percentage and number of samples in each category. 
+'''
 def getConfusionMatrixLabels(cf_matrix):
     group_names = ["True Neg","False Pos","False Neg","True Pos"]
     group_counts = ["{0:0.0f}".format(value) for value in cf_matrix.flatten()]
@@ -181,6 +212,11 @@ def getConfusionMatrixLabels(cf_matrix):
     cf_matrix_labels = np.asarray(cf_matrix_labels).reshape(2,2)
     return cf_matrix_labels
 
+'''
+Given training/validationData (model predictions and labels) and the predicted class labels, it calls functions to 
+generate a confusion matrix comparing the predictions with the true labels. The map is stored in the plotsDirectoryPath.
+For more details, refer to the function with the same name in plotUtils.py. 
+'''
 def storeConfusionMatrixHeatMap(plotsData, predicted_labels, plotsDirectoryPath):
     fig, (ax1, ax2) = plt.subplots(1,2, figsize=(14, 8))
     heatmap_description = getParametersDescription()
@@ -216,6 +252,12 @@ def storeConfusionMatrixHeatMap(plotsData, predicted_labels, plotsDirectoryPath)
     plt.show()
     plt.clf()
 
+'''
+The function does the following: 
+1. Gets the true donor percentage for all the patients in plotsData from patient transplant status CSV file 
+2. Creates and stores a correlation plot between true donor percentage and the predicted donor percentage from plotsData 
+    for all the patients. 
+'''
 def storePredictedDonorsCorrelationPlot(plotsData, plotsDirectoryPath):
     col_names = ["patient_sample_id", "num_samples", "donor_percentage", "Metadata Donor Percent", "DaysPostTransplant", "Clinical_signs_of_rejection", "patient_id"]
     patient_labels_df = pd.read_csv(arguments["patientTransplantStatusFile"], sep = "\t", names= col_names, skiprows=1)
@@ -231,7 +273,16 @@ def storePredictedDonorsCorrelationPlot(plotsData, plotsDirectoryPath):
     plt.show()
     plt.clf()
 
-#Plot a seaborn joint plot- so create a new dataframe - with the columns - daysPostTransplant, predictedDonorpercentage, truePredictedDonorPercentage and clinical signs of rejection and patient
+'''
+The function does the following 
+1. Create a df with only the relevant sample_ids, the number of days post transplant when that sample was taken and whether
+    clinical signs of rejection were observed at this time point. 
+2. Join the percentage predicted donors (from the model predictions) to the previous df 
+3. Create and store a plot of percentage predicted donors vs days post transplant and mark time points where there were 
+    clinical signs of rejection. 
+'''
+#Plot a seaborn joint plot- so create a new dataframe - with the columns - daysPostTransplant, predictedDonorpercentage,
+# truePredictedDonorPercentage and clinical signs of rejection and patient
 def storePercentDdCfDnaTransplantDaysPlot(plotsData):
     col_names = ["patient_sample_id", "num_samples", "donor_percentage", "Metadata Donor Percent", "DaysPostTransplant", "Clinical_signs_of_rejection", "patient_id"]
     patient_labels_df = pd.read_csv(arguments["patientTransplantStatusFile"], sep = "\t", names= col_names, skiprows=1)
@@ -258,7 +309,6 @@ def storePercentDdCfDnaTransplantDaysPlot(plotsData):
 
     sns.lineplot(data=to_plot_df, x="DaysPostTransplant", y='predicted_percent_donors', color="gray", alpha=0.2)
 
-
     # # Add gray lines connecting points with the same DaysPostTransplant value
     # for day in to_plot_df['DaysPostTransplant'].unique():
     #     predicted_data = to_plot_df[to_plot_df['DaysPostTransplant'] == day]
@@ -269,52 +319,9 @@ def storePercentDdCfDnaTransplantDaysPlot(plotsData):
     plt.legend()
     plt.show()
 
-def chatGptsMakePlotsCode(plotsData):
-    # Sample data
-    col_names = ["patient_sample_id", "num_samples", "donor_percentage", "Metadata Donor Percent", "DaysPostTransplant", "Clinical_signs_of_rejection", "patient_id"]
-    patient_labels_df = pd.read_csv(arguments["patientTransplantStatusFile"], sep="\t", names=col_names, skiprows=1)
-
-    # Filter rows based on predicted values
-    predicted_percent_donors = plotsData["predicted_donor_percentage"]
-    condition = patient_labels_df['patient_sample_id'].isin(predicted_percent_donors.keys())
-    to_plot_df = patient_labels_df[condition].copy()
-    to_plot_df.reset_index(drop=True, inplace=True)
-
-    # Add predicted percentage donor values from model predictions
-    predicted_percent_donors_list = []
-    for index, row in to_plot_df.iterrows():
-        patient_sample_id = row["patient_sample_id"]
-        predicted_percent_donors_list.append(predicted_percent_donors.get(patient_sample_id, None))
-    to_plot_df["predicted_percent_donors"] = predicted_percent_donors_list
-
-    # Create two DataFrames for predicted and true values
-    temp_renamed_df_predicted = to_plot_df.rename(columns={'predicted_percent_donors': 'ddcfDNA %'})
-    temp_renamed_df_true = to_plot_df.rename(columns={'Metadata Donor Percent': 'ddcfDNA %'})
-
-    # Create the scatter plots with different color palettes
-    sns.scatterplot(data=temp_renamed_df_predicted, x="DaysPostTransplant", y='ddcfDNA %', label="Predicted % ddcfDNA")
-    sns.scatterplot(data=temp_renamed_df_true, x="DaysPostTransplant", y='ddcfDNA %', label="True % dd-cfDNA")
-
-    # Group the data by DaysPostTransplant
-    predicted_groups = temp_renamed_df_predicted.groupby("DaysPostTransplant")
-    true_groups = temp_renamed_df_true.groupby("DaysPostTransplant")
-
-    # Add gray lines connecting points in the scatter plots
-    sns.lineplot(data=temp_renamed_df_predicted, x="DaysPostTransplant", y='ddcfDNA %', color="gray", alpha=0.2)
-    sns.lineplot(data=temp_renamed_df_true, x="DaysPostTransplant", y='ddcfDNA %', color="gray", alpha=0.2)
-
-    # # Plot gray lines connecting points with the same DaysPostTransplant value
-    # for day, group in predicted_groups:
-    #     plt.plot(group['DaysPostTransplant'], group['ddcfDNA %'], color='gray', alpha=0.2)
-        
-    # for day, group in true_groups:
-    #     plt.plot(group['DaysPostTransplant'], group['ddcfDNA %'], color='gray', alpha=0.2)
-
-
-    # Add a legend
-    plt.legend()
-    plt.show()
-
+'''
+Generate and store Receiver Operating Characteristics (ROC) curve using model predictions for the test patient set. 
+'''
 def storeAucAndRocCurve(probabilities, plotsData, plotsDirectoryPath):
     #Get AUC and TPR, FPR for training
     labels = plotsData["labels"]
@@ -338,6 +345,10 @@ def storeAucAndRocCurve(probabilities, plotsData, plotsDirectoryPath):
     plt.show()
     plt.clf()
 
+
+'''
+Calls all the functions that generate plots. 
+'''
 def storeDataAndMakePlots(plotsDirectoryPath, plotsData, class_predictions, output_probabilities, modelInputType):
     plt.style.use('seaborn')
     arguments["modelInputType"] = modelInputType
@@ -356,6 +367,19 @@ def storeDataAndMakePlots(plotsDirectoryPath, plotsData, class_predictions, outp
     
     storePercentDdCfDnaTransplantDaysPlot(plotsData)
 
+'''
+Function gets the one hot encoded sequence for the patient specified by the patient_file_name. Then it gets the predictions
+of the CNN model for these sequences and returns the plotsData (which contains predictions and the true labels) 
+
+Inputs - 
+patient_file_name - The filename for the patient whose predictions are to be returned.
+cnnModel - Pre-trained CNN model initialized with the weights
+criterion - Cross Entropy Loss function
+
+Outputs - trainingPlotsData and validationPlotsData They are maps with keys "predictions" and "labels". Predictions has 
+predicted likelihood for a sample being donor-derived. Labels has the true labels for all the samples. There are no
+epochs involved. 
+'''
 def runModelAndGetPredictionsForPatient(patient_file_name, cnnModel, criterion):
     plotsData = {"labels": {}, "predictions": {}, "loss": {}}
     
@@ -402,6 +426,18 @@ def runModelAndGetPredictionsForPatient(patient_file_name, cnnModel, criterion):
     plotsData["predictions"] = modelPredictionsToRet[1:, :]
     return plotsData
 
+'''
+Inputs - 
+filename - The filename for which predictions are provided 
+Predictions - The class predictions (0 or 1) generated from the predicted probability of a sample being donor-derived. 
+patient_percent_donors - A map where keys are patient_ids and values are the number of predicted donors for that patient. 
+
+The function adds a key-value pair to the map where key is the patient_id corresponding to the filename for which 
+predictions are supplied and value is the count of predicted donors calculated from predictions for that patient. 
+
+Output - 
+The updated patient_percent_donors map.
+'''
 def getPatientLevelPredictedDonors(filename, predictions, patient_percent_donors):
     patient_id = filename.replace(".recipient.hdf5", "").replace(".donor.hdf5", "")
     predicted_donors = predictions.count(1)
@@ -411,6 +447,10 @@ def getPatientLevelPredictedDonors(filename, predictions, patient_percent_donors
         patient_percent_donors[patient_id] = predicted_donors
     return patient_percent_donors
 
+'''
+Function that ties everything together. Its calls function to get individual patient predictions for all test patients. 
+Once predictions for all patients are ready, it calls the function to generate plots. 
+'''
 def combinePredictionsFromAllPatients(plotsDirectoryPath):
     to_exclude_patients = ['L80-W2.donor.hdf5', 'L80-W2.recipient.hdf5', 'L68-M12.donor.hdf5', 'L68-M12.recipient.hdf5', 'L81-M2.donor.hdf5', 'L81-M2.recipient.hdf5', 'L9b-W2.donor.hdf5', 'L9b-W2.recipient.hdf5', 'L82-M1-5.donor.hdf5', 'L82-M1-5.recipient.hdf5', 'L81-D1.1.donor.hdf5', 'L81-D1.1.recipient.hdf5', 'L77-D1-3.donor.hdf5', 'L77-D1-3.recipient.hdf5', 'L33-M3.donor.hdf5', 'L33-M3.recipient.hdf5', 'L5-M13_5.donor.hdf5', 'L5-M13_5.recipient.hdf5', 'L33-M8.donor.hdf5', 'L33-M8.recipient.hdf5', 'L34-M6.donor.hdf5', 'L34-M6.recipient.hdf5', 'L16-M23.donor.hdf5', 'L16-M23.recipient.hdf5', 'L59-M6.donor.hdf5', 'L59-M6.recipient.hdf5', 'L35-W2.donor.hdf5', 'L35-W2.recipient.hdf5', 'L33-M2-5.donor.hdf5', 'L33-M2-5.recipient.hdf5', 'L2-M25.donor.hdf5', 'L2-M25.recipient.hdf5', 'L69-M6.donor.hdf5', 'L69-M6.recipient.hdf5', 'L81-M3.donor.hdf5', 'L81-M3.recipient.hdf5', 'L69-M2.donor.hdf5', 'L69-M2.recipient.hdf5', 'L30-M2.donor.hdf5', 'L30-M2.recipient.hdf5', 'L74-D2-1.donor.hdf5', 'L74-D2-1.recipient.hdf5']
     #Load state dict into the model 
