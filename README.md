@@ -1,6 +1,8 @@
 # Fragmentomics
 
-Hey there !! Welcome to the GitHub repository for my project titled "Developing Deep Learning models for predicting lung transplant rejections using cell-free DNA fragmentomics approaches". This project was conducted as part of my Masters studies in Bioinformatics and Bicomplexity at Utrecht University. I developed three deep learning models to learn patterns distinguishing donor-derived cell-free (dd-cfDNA) DNA from recipient-derived cell-free DNA (rd-cfDNA). This repository contains the scripts developed during my research, for data pre-processing, data analysis, training the models and evaluating their performance. Feel free to explore the repository and reach out to me at madhuvl96@gmail.com, if you have any questions or would like to collaborate :) 
+Hey there !! Welcome to the GitHub repository for my project titled "Developing Deep Learning models for predicting lung transplant rejections using cell-free DNA fragmentomics approaches". 
+
+This project was conducted as part of my Masters studies in Bioinformatics and Bicomplexity at Utrecht University. I developed three deep learning models to learn patterns distinguishing donor-derived cell-free (dd-cfDNA) DNA from recipient-derived cell-free DNA (rd-cfDNA). This repository contains the scripts developed during my research, for data pre-processing, data analysis, training the models and evaluating their performance. Feel free to explore the repository and reach out to me at madhuvl96@gmail.com, if you have any questions or would like to collaborate :) 
 
 ### Motivation
 
@@ -11,3 +13,9 @@ Hey there !! Welcome to the GitHub repository for my project titled "Developing 
   The main challenge with measuring the levels of dd-cfDNA is differentiating between dd-cfDNA and the recipient's own cell-free DNA (recipient-derived cfDNA or rd-cfDNA). Current methods to measure dd-cfDNA leverage Single Nucleotide Polymorphism (SNP) differences between the donor and the recipient. Markers specific to donor SNPs are used to selectively amplify dd-cfDNA. However, this method is limited by the availability of donor information and the number of SNP differences between the donor and the recipient. 
 
   To mitigate this limitation, we've proposed a SNP-free approach of differentiating between dd-cfDNA and rd-cfDNA based on their tissue of origin. Since the majority of cell-free DNA in a healthy individual originate from blood cells, rd-cfDNA predominantly originates from blood cells whereas dd-cfDNA originats from lung cells. We've trained Deep Learning models to learn patterns indicative of the tissue of origin, to differentiate between dd-cfDNA and rd-cfDNA. 
+
+### Explanation of feature sets 
+
+
+
+
