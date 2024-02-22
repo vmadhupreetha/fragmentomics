@@ -25,9 +25,9 @@ This project was conducted as part of my Masters studies in Bioinformatics and B
 
 ## Methodology :
 
-### Features for training
+### Features for training: 
 
-Given than all cell-types share the same sequence, cell-free DNA sequence alone is not sufficient to train models to differentiate between cell types. Fragmentation of DNA during cfDNA formation is not random, but are influenced by the epigenetic landscape of the parent cells. Consequently, different regions of the genome form cell-free DNA in different cell types [[2]](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4715266/). We explored two feature sets that leverage the fact that donor- and recipient-derived fragments originate from different genomic regions.
+Given that all cell-types share the same sequence, cell-free DNA sequence alone is not sufficient to train models to differentiate between cell types. Fragmentation of DNA during cfDNA formation is not random, but are influenced by the epigenetic landscape of the parent cells. Consequently, different regions of the genome form cell-free DNA in different cell types [[2]](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4715266/). We explored two feature sets that leverage the fact that donor- and recipient-derived fragments originate from different genomic regions.
 
 - **Enformer-generated epigenetic tracks as feature sets:**<br>
     The general idea behind this feature set is that different genomic regions inturn differ in their chromatin structure, accessibility, epigenetic modifications. For capturing these properties as numerical values for training the models, we used a pre-trained Deep Learning model called ["Enformer"](https://github.com/lucidrains/enformer-pytorch). Enformer takes a DNA sequence as input and predicts it's epigenetic properties in the form of the simulated results of 4 experimenets - CAGE-seq, ATAC-seq, CHIP-seq and DNAse accessibility. The predictions are presented in the form of 5,313 epigenetic "tracks", where each track refers to the simulated results of one of these four experiment types for one cell type [[3]](https://www.nature.com/articles/s41592-021-01252-x). 
