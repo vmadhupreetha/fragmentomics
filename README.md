@@ -54,12 +54,14 @@ Given than all cell-types share the same sequence, cell-free DNA sequence alone 
 
 <img width="1134" alt="workflow" src="https://github.com/vmadhupreetha/fragmentomics/assets/113985193/e9aa587e-9197-46d2-9fbf-bf4aea2f542c">
 
+## Additional Information
+
+Refer to the [thesis report](https://github.com/vmadhupreetha/fragmentomics/blob/master/fragmentomics_thesis_report.pdf) or [poowerpoint slides](https://github.com/vmadhupreetha/fragmentomics/blob/master/fragmentomics_presentation.pptx) for more information.
 
 ## References 
 1. De Vlaminck, Iwijn, et al. "Noninvasive monitoring of infection and rejection after lung transplantation." Proceedings of the National Academy of Sciences 112.43 (2015): 13336-13341 <br>
 2. Snyder, Matthew W., et al. "Cell-free DNA comprises an in vivo nucleosome footprint that informs its tissues-of-origin." Cell 164.1 (2016): 57-68 <br>
 3. Avsec, Žiga, et al. "Effective gene expression prediction from sequence by integrating long-range interactions." Nature methods 18.10 (2021): 1196-1203 <br>
-
 
 
 
