@@ -19,7 +19,7 @@ This project was conducted as part of my Masters studies in Bioinformatics and B
   Develop and train deep learning models to distinguish between donor- and recipient-derived cfDNA, and inturn use these models to predict whether lung transplant recipients are experiencing rejection based on their cfDNA sequence. 
 
 ## Input dataset 
-  The dataset for this project was sourced from a study conducted on 47 lung transplant recipients by De Vlaminck et al. in 2015 [[1]](https://www.pnas.org/doi/abs/10.1073/pnas.1517494112). The data consists of cfDNA fragment sequences collected from these patients at various time points post-transplant. The labels for each cfDNA fragment comes from the SNP-genotyping based classification performed by the authors in the study. 
+  The dataset for this project was sourced from a study conducted on 47 lung transplant recipients by De Vlaminck et al. in 2015 [[1]](https://www.pnas.org/doi/abs/10.1073/pnas.1517494112). The data consists of cfDNA fragment sequences collected from these patients at various time points post-transplant. The labels for each cfDNA fragment come from the SNP-genotyping based classification performed by the authors in the study. 
 
 <img width="1209" alt="the_dataset" src="https://github.com/vmadhupreetha/fragmentomics/assets/113985193/3653cc34-c8d7-4ff7-9764-7a2971d50aec">
 
